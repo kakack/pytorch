@@ -833,7 +833,7 @@ Tensor& intersection_binary_op_sparse_dense_out(
     }
     // we need to expand d in the dimensions it is being indexed into
     // to avoid out of bound indices
-    const auto d_expanded_shape = decltype(res_shape)(
+    const auto d_expanded_shape = std::vector<int64_t>(
         res_shape.begin() + res_shape.size() - d_dim, res_shape.end());
     return d.expand(d_expanded_shape).index(intersec_indices);
   }();
