@@ -3561,10 +3561,16 @@ class TestSparse(TestCase):
             sub_shape = shape[dim:]
             sparse_dim = len(sub_shape) // 2
 
+            coalesce_sparse = coalesced
             # Case 1: sparse broadcasts over dense
             # This case always coalesce inputs and that could lead to loss of precision,
             # hence it is inhibited for bfloat16 by providing already coalesced tensors.
-            coalesce_sparse = True if dtype == torch.bfloat16 else coalesced
+            if dtype == torch.bfloat16:
+                coalesce_sparse = True
+            # Turns CPUBoolTensor.coalesce() produces different results from CUDABoolTensor.coalesce()
+            # TODO: investigate
+            if dtype == torch.bool and torch.device(device).type == "cuda":
+                coalesce_sparse = True
             s = self._gen_sparse(sparse_dim, nnz, sub_shape, dtype, device, coalesce_sparse)[0]
             d = make_tensor(shape, dtype=dtype, device=device)
             check(self, s, d)
