@@ -3543,15 +3543,17 @@ class TestSparse(TestCase):
 
     @coalescedonoff
     @dtypes(*all_types_and_complex_and(torch.bool, torch.half, torch.bfloat16))
-    @precisionOverride({torch.bfloat16: 2e-2, torch.float16: 1e-2})
+    @precisionOverride({torch.bfloat16: 2e-2, torch.float16: 2e-2})
     def test_sparse_dense_mul(self, device, dtype, coalesced):
         shape = (2, 3, 4, 10)
         nnz = 10
 
         def check(self, s, d):
             res = d * s
+
             # check commutativity
             self.assertEqual(res, d * s)
+
             # check correctness
             self.assertEqual(res.to_dense(), s.to_dense() * d)
 
