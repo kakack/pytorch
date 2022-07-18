@@ -36,8 +36,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -54,8 +54,8 @@ jobs:
     needs: wheel-py3_7-cpu-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -71,8 +71,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_7-cpu-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -90,8 +90,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -109,8 +109,8 @@ jobs:
     needs: wheel-py3_7-cuda11_3-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -127,8 +127,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_7-cuda11_3-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -147,8 +147,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -166,8 +166,8 @@ jobs:
     needs: wheel-py3_7-cuda11_6-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -184,8 +184,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_7-cuda11_6-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -204,8 +204,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -223,8 +223,8 @@ jobs:
     needs: wheel-py3_7-cuda11_7-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -241,8 +241,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_7-cuda11_7-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -261,8 +261,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -279,8 +279,8 @@ jobs:
     needs: wheel-py3_8-cpu-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -296,8 +296,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_8-cpu-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -315,8 +315,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -334,8 +334,8 @@ jobs:
     needs: wheel-py3_8-cuda11_3-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -352,8 +352,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_8-cuda11_3-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -372,8 +372,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -391,8 +391,8 @@ jobs:
     needs: wheel-py3_8-cuda11_6-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -409,8 +409,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_8-cuda11_6-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -429,8 +429,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -448,8 +448,8 @@ jobs:
     needs: wheel-py3_8-cuda11_7-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -466,8 +466,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_8-cuda11_7-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -486,8 +486,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -504,8 +504,8 @@ jobs:
     needs: wheel-py3_9-cpu-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -521,8 +521,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_9-cpu-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -540,8 +540,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -559,8 +559,8 @@ jobs:
     needs: wheel-py3_9-cuda11_3-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -577,8 +577,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_9-cuda11_3-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -597,8 +597,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -616,8 +616,8 @@ jobs:
     needs: wheel-py3_9-cuda11_6-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -634,8 +634,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_9-cuda11_6-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -654,8 +654,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -673,8 +673,8 @@ jobs:
     needs: wheel-py3_9-cuda11_7-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -691,8 +691,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_9-cuda11_7-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -711,8 +711,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -729,8 +729,8 @@ jobs:
     needs: wheel-py3_10-cpu-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -746,8 +746,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_10-cpu-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -765,8 +765,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -784,8 +784,8 @@ jobs:
     needs: wheel-py3_10-cuda11_3-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -802,8 +802,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_10-cuda11_3-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -822,8 +822,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -841,8 +841,8 @@ jobs:
     needs: wheel-py3_10-cuda11_6-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -859,8 +859,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_10-cuda11_6-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -879,8 +879,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     uses: ./.github/workflows/_binary-build-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -898,8 +898,8 @@ jobs:
     needs: wheel-py3_10-cuda11_7-build
     uses: ./.github/workflows/_binary-test-windows.yml
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
@@ -916,8 +916,8 @@ jobs:
     if: ${{ github.repository_owner == 'pytorch' }}
     needs: wheel-py3_10-cuda11_7-test
     with:
-      PYTORCH_ROOT: ./pytorch
-      BUILDER_ROOT: ./builder
+      PYTORCH_ROOT: ${{ github.workspace }}/pytorch
+      BUILDER_ROOT: ${{ github.workspace }}/builder
       PACKAGE_TYPE: wheel
       # TODO: This is a legacy variable that we eventually want to get rid of in
       #       favor of GPU_ARCH_VERSION
