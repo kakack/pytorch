@@ -3542,8 +3542,8 @@ class TestSparse(TestCase):
         test(4, 6, [7, 3, 1, 3, 2, 1], [7, 3, 1, 3, 2, 3])
 
     @coalescedonoff
-    #@dtypes(*all_types_and_complex_and(torch.bool, torch.half, torch.bfloat16))
-    @dtypes(torch.float16)
+    @dtypes(*all_types_and_complex_and(torch.bool, torch.half, torch.bfloat16))
+    @precisionOverride({torch.bfloat16: 2e-2, torch.float16: 1e-2})
     def test_sparse_dense_mul(self, device, dtype, coalesced):
         shape = (2, 3, 4, 10)
         nnz = 10
@@ -3555,21 +3555,20 @@ class TestSparse(TestCase):
             # check correctness
             self.assertEqual(res.to_dense(), s.to_dense() * d)
 
-        for dim in range(len(shape)):
+        for dim in range(1, len(shape)):
             sub_shape = shape[dim:]
             sparse_dim = len(sub_shape) // 2
 
             # Case 1: sparse broadcasts over dense
-            s = self._gen_sparse(sparse_dim, nnz, sub_shape, dtype, device, coalesced)[0]
+            # This case always coalesce inputs and that could lead to loss of precision,
+            # hence it is inhibited for bfloat16 by providing already coalesced tensors.
+            coalesce_sparse = True if dtype == torch.bfloat16 else coalesced
+            s = self._gen_sparse(sparse_dim, nnz, sub_shape, dtype, device, coalesce_sparse)[0]
             d = make_tensor(shape, dtype=dtype, device=device)
-            res = s * d
-            # check commutativity
-            self.assertEqual(res, d * s)
-            # check correctness
-            #self.assertEqual(res.to_dense(), s.to_dense() * d)
+            check(self, s, d)
 
             # Case 2: dense broadcasts over sparse
-            s = self._gen_sparse(2, nnz, shape, dtype, device, coalesced)[0]
+            s = self._gen_sparse(3, nnz, shape, dtype, device, coalesced)[0]
             d = make_tensor(sub_shape, dtype=dtype, device=device)
             check(self, s, d)
 
