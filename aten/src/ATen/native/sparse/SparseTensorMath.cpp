@@ -748,7 +748,7 @@ Tensor& mul_sparse_csr_(Tensor& self, const Tensor& other) {
 }
 
 // A generic function to implement pointwise-like operations
-// between dense and sparse COO tensors.
+// with index intersection between dense and sparse COO tensors.
 // NOTE: op is always called as op(dense, sparse), so it is up
 // to the user to supply right implementations for non-commutative
 // operations.
@@ -757,12 +757,25 @@ Tensor& intersection_binary_op_sparse_dense_out(
     const Tensor& d,
     const SparseTensor& s_,
     Tensor& res,
+    const char* const op_name,
     const binary_func_t& op,
     const bool coalesce = false) {
   // compute broadcasted shape.
   const auto res_shape = infer_size(d.sizes(), s_.sizes());
 
-  // TODO: handle the case when d.numel is zero
+  // Short-circuit if either s_._nnz or d.numel is zero
+  if (!s_._nnz() || !d.numel()) {
+    auto common_dtype = promoteTypes(d.scalar_type(), s_.scalar_type());
+    TORCH_CHECK(canCast(common_dtype, res.scalar_type()),
+        "Can't convert result type ", common_dtype, " to output ", res.scalar_type(),
+        " in ", op_name, " operation.");
+    const auto indices = at::empty({res_shape.size(), 0}, s_._indices().options());
+    const auto values = at::empty({0}, d.options().dtype(common_dtype));
+    get_sparse_impl(res)->raw_resize_(/*sparse_dim=*/res_shape.size(), /*dense_dim=*/0, /*shape=*/res_shape);
+    get_sparse_impl(res)->set_indices_and_values_unsafe(indices, values);
+    get_sparse_impl(res)->set_nnz_and_narrow(0);
+    return res;
+  }
 
   const auto d_dim = d.dim();
   const auto s_dim = s_.dim();
@@ -886,28 +899,26 @@ Tensor& mul_out_sparse_cpu(const Tensor& t_, const Tensor& src_, Tensor& r) {
   TORCH_CHECK(!r.is_cuda(), "mul: expected 'out' to be CPU tensor, but got CUDA tensor");
   TORCH_CHECK(!src_.is_cuda(), "mul: expected 'other' to be a CPU tensor, but got a CUDA tensor");
 
-  const SparseTensor potential_empty_sparse_argument = (src_.is_sparse() && src_._nnz() == 0)
-    ? src_ : (t_.is_sparse() && t_._nnz() == 0) ? t_ : Tensor {};
-  if (potential_empty_sparse_argument.defined()) {
-    r.resize_as_(potential_empty_sparse_argument);
-    return r.zero_();
-  }
-
   // case mul(sparse, dense)
   if (!src_.is_sparse()) {
-    return intersection_binary_op_sparse_dense_out(src_, t_, r, [](const Tensor& a, const Tensor& b) -> Tensor {
+    return intersection_binary_op_sparse_dense_out(src_, t_, r, "mul", [](const Tensor& a, const Tensor& b) -> Tensor {
         return at::mul(a, b);
     });
   }
   // case mul(dense, sparse)
   if (!t_.is_sparse()) {
-    return intersection_binary_op_sparse_dense_out(t_, src_, r, [](const Tensor& a, const Tensor& b) -> Tensor {
+    return intersection_binary_op_sparse_dense_out(t_, src_, r, "mul", [](const Tensor& a, const Tensor& b) -> Tensor {
         return at::mul(a, b);
     });
   }
 
-  TORCH_CHECK(t_.sizes().equals(src_.sizes()), "mul operands have incompatible sizes");
-  TORCH_CHECK(t_.sizes().equals(src_.sizes()), "mul: expected 'self' and 'other' to have same sizes, but ", t_.sizes(), " != ", src_.sizes());
+  TORCH_CHECK(t_.sizes().equals(src_.sizes()), "mul: expected 'self' and 'other' to have same sizes when both are sparse"
+      ", but ", t_.sizes(), " != ", src_.sizes());
+
+  if (!t_._nnz() || !src_._nnz()) {
+    r.resize_as_(t_);
+    return r.zero_();
+  }
 
   SparseTensor t = t_.coalesce();
   SparseTensor src = src_.coalesce();
