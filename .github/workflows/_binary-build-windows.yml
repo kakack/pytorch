@@ -88,8 +88,8 @@ jobs:
         shell: bash
         run: |
           {
-            echo "PYTORCH_ROOT=${{ env.PYTORCH_ROOT }}"
-            echo "BUILDER_ROOT=${{ env.BUILDER_ROOT }}"
+            echo "PYTORCH_ROOT=${{ inputs.PYTORCH_ROOT }}"
+            echo "BUILDER_ROOT=${{ inputs.BUILDER_ROOT }}"
             echo "PACKAGE_TYPE=${{ env.PACKAGE_TYPE }}"
 
             echo "DESIRED_CUDA=${{ env.DESIRED_CUDA }}"
