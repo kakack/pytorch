@@ -5,7 +5,8 @@ import collections
 import functools
 import numbers
 import sys
-from torch.utils.data.datapipes._hook_iterator import hook_iterator
+
+from torch.utils.data.datapipes._hook_iterator import hook_iterator, _SnapshotState
 from typing import (Any, Dict, Iterator, Generic, List, Set, Tuple, TypeVar, Union,
                     get_type_hints)
 from typing import _eval_type, _tp_cache, _type_check, _type_repr  # type: ignore[attr-defined]
@@ -350,15 +351,17 @@ class _IterDataPipeMeta(_DataPipeMeta):
             @functools.wraps(reset_func)
             def conditional_reset(*args, **kwargs):
                 r"""
-                Only execute DataPipe's `reset()` method if `_restored` is False. This allows recently
+                Only execute DataPipe's `reset()` method if `_SnapshotState` is `Iterating`. This allows recently
                 restored DataPipe to preserve its restored state during the initial `__iter__` call.
                 """
                 datapipe = args[0]
-                if datapipe._restored is True:
-                    datapipe._restored = False
-                else:
+                if datapipe._snapshot_state == _SnapshotState.Iterating:
+                    # Reset `NotStarted` is necessary because the `source_datapipe` of a DataPipe might have
+                    # already begun iterating.
                     datapipe._number_of_samples_yielded = 0
+                    datapipe._fast_forward_iterator = None
                     reset_func(*args, **kwargs)
+                datapipe._snapshot_state = _SnapshotState.Iterating
 
             namespace['reset'] = conditional_reset
 
@@ -368,12 +371,16 @@ class _IterDataPipeMeta(_DataPipeMeta):
             @functools.wraps(setstate_func)
             def wrap_setstate(*args, **kwargs):
                 r"""
-                Set `_restored` to True during `__setstate__`, such that the next `reset()` call during
+                Set `_SnapshotState` to `NotStarted` during `__setstate__`, such that the next `reset()` call during
                 iterator creation will not actually reset the state of the DataPipe.
                 """
-                datapipe = args[0]
-                datapipe._restored = True
-                return setstate_func(*args, **kwargs)
+                try:
+                    return setstate_func(*args, **kwargs)
+                finally:
+                    # This needs happen after because the state being passed in
+                    # may have `datapipe._SnapshotState = Iterating`.
+                    datapipe = args[0]
+                    datapipe._snapshot_state = _SnapshotState.NotStarted
 
             namespace['__setstate__'] = wrap_setstate
 
