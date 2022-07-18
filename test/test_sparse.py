@@ -3541,6 +3541,39 @@ class TestSparse(TestCase):
         test(4, 6, [7, 3, 1, 3, 1, 3], [7, 3, 1, 3, 2, 3])
         test(4, 6, [7, 3, 1, 3, 2, 1], [7, 3, 1, 3, 2, 3])
 
+    @coalescedonoff
+    #@dtypes(*all_types_and_complex_and(torch.bool, torch.half, torch.bfloat16))
+    @dtypes(torch.float16)
+    def test_sparse_dense_mul(self, device, dtype, coalesced):
+        shape = (2, 3, 4, 10)
+        nnz = 10
+
+        def check(self, s, d):
+            res = d * s
+            # check commutativity
+            self.assertEqual(res, d * s)
+            # check correctness
+            self.assertEqual(res.to_dense(), s.to_dense() * d)
+
+        for dim in range(len(shape)):
+            sub_shape = shape[dim:]
+            sparse_dim = len(sub_shape) // 2
+
+            # Case 1: sparse broadcasts over dense
+            s = self._gen_sparse(sparse_dim, nnz, sub_shape, dtype, device, coalesced)[0]
+            d = make_tensor(shape, dtype=dtype, device=device)
+            res = s * d
+            # check commutativity
+            self.assertEqual(res, d * s)
+            # check correctness
+            #self.assertEqual(res.to_dense(), s.to_dense() * d)
+
+            # Case 2: dense broadcasts over sparse
+            s = self._gen_sparse(2, nnz, shape, dtype, device, coalesced)[0]
+            d = make_tensor(sub_shape, dtype=dtype, device=device)
+            check(self, s, d)
+
+
     @unittest.skipIf(not TEST_NUMPY, "NumPy is not availible")
     @onlyCPU
     @dtypes(*all_types_and_complex_and(torch.bool))
