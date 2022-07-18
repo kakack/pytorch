@@ -837,7 +837,7 @@ Tensor& intersection_binary_op_sparse_dense_out(
         res_shape.begin() + res_shape.size() - d_dim, res_shape.end());
     return d.expand(d_expanded_shape).index(intersec_indices);
   }();
-  
+
   // When dims match or sparse is "larger", the result nnz is the same,
   // so only values get modified.
   if (s_dim >= d_dim) {
