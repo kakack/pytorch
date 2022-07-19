@@ -3557,7 +3557,17 @@ class TestSparse(TestCase):
             # check correctness
             self.assertEqual(res.to_dense(), s.to_dense() * d)
 
-        for dim in range(1, len(shape)):
+            # check in-placeness
+            if d.shape == s.shape:
+                # for dense
+                dc = d.clone()
+                self.assertEqual(d.mul_(s), dc.mul_(s.to_dense()))
+
+                # for sparse
+                sc = s.clone()
+                self.assertEqual(s.mul_(d).to_dense(), sc.to_dense().mul_(d))
+
+        for dim in range(len(shape)):
             sub_shape = shape[dim:]
             sparse_dim = len(sub_shape) // 2
 
@@ -3579,7 +3589,6 @@ class TestSparse(TestCase):
             s = self._gen_sparse(3, nnz, shape, dtype, device, coalesced)[0]
             d = make_tensor(sub_shape, dtype=dtype, device=device)
             check(self, s, d)
-
 
     @unittest.skipIf(not TEST_NUMPY, "NumPy is not availible")
     @onlyCPU
