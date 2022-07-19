@@ -3567,8 +3567,8 @@ class TestSparse(TestCase):
             # hence it is inhibited for bfloat16 by providing already coalesced tensors.
             if dtype == torch.bfloat16:
                 coalesce_sparse = True
-            # Turns CPUBoolTensor.coalesce() produces different results from CUDABoolTensor.coalesce()
-            # TODO: investigate
+            # to_dense is problematic for boolean non-coalesced CUDA tensors
+            # see https://github.com/pytorch/pytorch/issues/81648
             if dtype == torch.bool and torch.device(device).type == "cuda":
                 coalesce_sparse = True
             s = self._gen_sparse(sparse_dim, nnz, sub_shape, dtype, device, coalesce_sparse)[0]

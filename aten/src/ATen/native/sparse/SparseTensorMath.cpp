@@ -891,8 +891,8 @@ Tensor& intersection_binary_op_sparse_dense_out(
 
 Tensor _mul_dense_sparse(const Tensor& d, const Tensor& s) {
   auto commonDtype = at::result_type(d, s);
-  auto result_options = d.options().dtype(commonDtype);
-  Tensor result = at::empty({0}, result_options);
+  auto result_options = s.options().dtype(commonDtype);
+  Tensor result = at::empty_like(s, result_options);
   return at::native::_mul_dense_sparse_out(d, s, result);
 }
 
