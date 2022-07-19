@@ -266,6 +266,7 @@ make_fx_failures = {
     xfail('to_sparse'),
     # segfaults
     skip('block_diag'),
+    skip('t'),
 }
 
 fake_tensor_failures = {

@@ -14,6 +14,9 @@ import functools
 import itertools
 import contextlib
 from dataclasses import dataclass
+from torch._decomp import decomposition_table
+from torch._meta_registrations import meta_table
+import torch.fx.experimental.symbolic_shapes as symbolic_shapes
 
 
 aten = torch.ops.aten
@@ -305,6 +308,12 @@ class FakeTensor(torch.Tensor):
     def __repr__(self):
         return f"FakeTensor({self.fake_device}, {self.size()}, {self.dtype})"
 
+    def new_empty(self, shape, dtype=None):
+        return torch.empty(shape, dtype=dtype)
+
+    def stride(self):
+        return symbolic_shapes.create_contiguous(self.shape)
+
     def new(self, *args, **kwargs):
         # torch.Tensor.new does not go through the normal dispatcher pattern
         # so in order to use the same pattern as normal invocation of
@@ -334,6 +343,9 @@ class FakeTensor(torch.Tensor):
             else:
                 return args[0].fake_device
 
+        if symbolic_shapes.is_symbolic_op(func):
+            return symbolic_shapes.handle_symbolic_op(func, args, kwargs)
+
         # Because fake mode can return NotImplemented (if it sees a subclass
         # it doesn't know how to deal with), this test here is important
         # because the next dispatch after a fake mode will attempt to use
@@ -349,7 +361,6 @@ class FakeTensor(torch.Tensor):
                     fake_mode = arg.fake_mode
                 else:
                     assert fake_mode is arg.fake_mode, "Mixing modes NYI"
-
         with enable_torch_dispatch_mode(fake_mode):
             return func(*args, **kwargs)
 
@@ -434,6 +445,7 @@ class FakeTensorMode(TorchDispatchMode):
         # the device property
         self.in_kernel_invocation = False
 
+
     def __torch_dispatch__(self, func, types, args=(), kwargs=None):
         kwargs = kwargs if kwargs else {}
 
@@ -444,8 +456,25 @@ class FakeTensorMode(TorchDispatchMode):
             else:
                 return args[0].fake_device
 
+        with enable_torch_dispatch_mode(self), torch.overrides.enable_reentrant_dispatch():
+            if func in meta_table:
+                r = meta_table[func](*args, **kwargs)
+                return r
+            elif func in decomposition_table:
+                r = decomposition_table[func](*args, **kwargs)
+                return r
+
+        with no_dispatch():
+            if symbolic_shapes.is_symbolic_op(func):
+                return symbolic_shapes.handle_symbolic_op(func, args, kwargs)
+
+
+        constructors = [torch.ops.aten.empty.SymInt]
+        if 'prims' not in func.overloadpacket._qualified_op_name and func not in constructors:
+            raise RuntimeError(f"Couldn't find meta function/decomposition, {func}")
         # prims already wrap FakeTensor inputs to FakeTensor outputs
         # and do device logic, we dont need do anything but run them
+
         if "prims::" in func._schema.name:
             with no_dispatch():
                 return func(*args, **kwargs)
@@ -535,7 +564,8 @@ class FakeTensorMode(TorchDispatchMode):
 
             common_device = FakeTensor._find_common_device(func, args, kwargs)
 
-            return tree_map(partial(wrap, device=common_device), r)
+            out = tree_map(partial(wrap, device=common_device), r)
+            return out
 
     def from_tensor(self, tensor):
         return self.fake_tensor_converter(self, tensor)
