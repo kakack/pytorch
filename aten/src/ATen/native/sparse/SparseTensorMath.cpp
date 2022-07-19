@@ -708,7 +708,15 @@ Tensor mul_sparse(const Tensor& self, const Tensor& other) {
 }
 
 Tensor& mul_sparse_(Tensor& self, const Tensor& other) {
-  return at::mul_out(self, self, other);  // redispatch!
+  if (self.is_sparse()) {
+    return at::mul_out(self, self, other);  // redispatch!
+  }
+  else {
+    const auto res = at::mul(self, other);
+    self.zero_();
+    self.add_(res);
+    return self;
+  }
 }
 
 Tensor& mul_out_sparse_csr(const Tensor& t_, const Tensor& src_, Tensor& r) {
